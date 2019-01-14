@@ -2,7 +2,7 @@ name: glue
 description: Flutter Glue helper.
 version: 1.0.0
 author: amine.bizid@gmail.com
-
+homepage: https://github.com/aminebizid/glue
 
 environment:
   sdk: ">=2.0.0-dev.28.0 <3.0.0"
