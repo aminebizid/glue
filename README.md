@@ -1,6 +1,31 @@
 # glue
 
-A library that allows you to easily pass a data Model from a parent Widget down to its descendants and from descendants to its parent.
+A library that allows you to easily pass a data Model from a one Widget to others using messaging system.
+This will help avoid passing delegates.
+
+A widget can subscribe to external events using on<EventType>() method.
+
+```dart
+
+
+abstract class InEvent {}
+class PlusEvent extends InEvent {}
+class MinusEvent extends InEvent {}
+
+ @override
+  void initState() {
+    // subscribe to events
+    on<PlusEvent>(_onPlusRecieved);
+    on<MinusEvent>(_onMinusRecieved);
+    super.initState();
+  }
+
+
+// Another widget
+myWidget.pushEvent(myEvent);
+
+
+```
 
 ## Usage
 
@@ -26,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    _counterView.on<HelloEvent>((HelloEvent event) => print('bye'));
+    _counterView.on<HelloEvent>((HelloEvent event) => print('Hello'));
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title)
@@ -56,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-```dart
+```
 
 ```dart
 import 'package:flutter/material.dart';
@@ -111,4 +136,4 @@ class _CounterViewState extends GlueState<InEvent, OutEvent, CounterView> {
     );
   }
 }
-```dart
+```
