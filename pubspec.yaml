@@ -1,6 +1,6 @@
 name: glue
-description: Flutter Glue helper.
-version: 1.0.2
+description: A library that allows you to easily pass a data Model from a one Widget to others using messaging system. This will help avoid passing delegates.
+version: 1.0.3
 author: Amine BIZID <amine.bizid@gmail.com>
 homepage: https://github.com/aminebizid/glue
 
