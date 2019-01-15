@@ -1,97 +1,38 @@
-import 'package:flutter/material.dart';
 import 'package:glue/src/glue_rx.dart';
 
-abstract class GlueWidget extends StatefulWidget {
-  final GlueRX _inGlue = GlueRX();
-  final GlueRX _outGlue = GlueRX();
-  final String groupName;
+class Glue {
+  static final Glue _internalHub = Glue();
 
-  GlueWidget({this.groupName}) {
-    if (groupName != null) {
-      glueDispatcher.addGroup(groupName);
+  static void on<Channel, Event>(void onData(Event event)) {
+    _internalHub._on<Channel, Event>(onData);
+  }
+
+  static void emit<Channel>(event) {
+    _internalHub._emit<Channel>(event);
+  }
+
+  static void off<Channel, Event>(void onData(Event event)) {
+    _internalHub._off<Channel, Event>(onData);
+  }
+
+  final Map<Type, GlueRX> _channels = Map<Type, GlueRX>();
+
+  void _on<Channel, Event>(void onData(Event event)) {
+    if (!_channels.containsKey(Channel)) _channels[Channel] = GlueRX();
+    _channels[Channel].on<Event>(onData);
+  }
+
+  void _emit<Channel>(event) {
+    if (!_channels.containsKey(Channel)) return;
+    _channels[Channel].pushEvent(event);
+  }
+
+  void _off<Channel, Event>(void onData(Event event)) {
+    if (!_channels.containsKey(Channel)) return;
+    _channels[Channel].off<Event>(onData);
+    if (_channels[Channel].isEmpty()) {
+      _channels[Channel].dispose();
+      _channels.remove(Channel);
     }
-     glueDispatcher.addType(this.runtimeType);
-  }
-   
-  pushEvent(event) => _inGlue.pushEvent(event);
-  on<T>(void onData(T event)) => _outGlue.on(onData);
-
-  dispose() {
-    _inGlue.dispose();
-    _outGlue.dispose();
-  }
-
-  @override
-  State createState();
-} 
-
-
-abstract class GlueState<S extends GlueWidget> extends State<S>
-{
-  on<T>(void onData(T event)) {
-    widget._inGlue.on(onData);
-    glueDispatcher.onType<S, T>(onData);
-    if (widget.groupName != null)
-      glueDispatcher.onGroup<T>(widget.groupName, onData);
-  } 
-  pushEvent(event) => widget._outGlue.pushEvent(event);
-
-  @override
-  void dispose() {
-    widget.dispose();
-    super.dispose();
   }
 }
-
-
-class GlueHub {
-  final Map<String, GlueRX> _groups = Map<String, GlueRX>();
-  final Map<Type, GlueRX> _types = Map<Type, GlueRX>();
-
-  addGroup(String groupName) {
-    if (!_groups.containsKey(groupName))
-      _groups[groupName] = GlueRX();
-  }
-
-  addType(Type type) {
-    if (!_types.containsKey(type))
-      _types[type] = GlueRX();
-  }
-
-  internalPushGroup(String groupName, event) {
-    if (_groups.containsKey(groupName)) {
-      _groups[groupName].pushEvent(event);
-    }
-  }
-
-  static pushGroup(String groupName, event) {
-    glueDispatcher.internalPushGroup(groupName, event);
-  }
-
-   internalPush<T>(event) {
-    if (_types.containsKey(T)) {
-      _types[T].pushEvent(event);
-    }
-  }
-
-  static push<T>(event) {
-    glueDispatcher.internalPush<T>(event);
-  }
-
-  onGroup<E>(String groupName, onData) {
-    _groups[groupName].on<E>(onData);
-  }
-
-  onType<T, E>(onData) {
-    _types[T].on<E>(onData);
-  }
-
-
-
-  
-}
-
-var glueDispatcher = GlueHub();
-
-
-

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.6
+
+* Refactor
+
 ## 1.0.5
 
 * Add GlueHub
