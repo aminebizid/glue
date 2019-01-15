@@ -18,10 +18,10 @@ abstract class GlueWidget<IN, OUT> extends StatefulWidget {
 } 
 
 
-abstract class GlueState<IN, OUT, S extends GlueWidget> extends State<S>
+abstract class GlueState<S extends GlueWidget> extends State<S>
 {
   on<T>(void onData(T event)) => widget._inGlue.on(onData);
-  pushEvent(OUT event) => widget._outGlue.pushEvent(event);
+  pushEvent(event) => widget._outGlue.pushEvent(event);
 
   @override
   void dispose() {
@@ -30,6 +30,7 @@ abstract class GlueState<IN, OUT, S extends GlueWidget> extends State<S>
   }
 
 }
+
 
 class Glue<T> {
   Map<Type, Function> _callbacks = new Map<Type, Function>();

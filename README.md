@@ -51,7 +51,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    _counterView.on<HelloEvent>((HelloEvent event) => print('Hello'));
+    _counterView.on<HelloEvent>((HelloEvent event) => print('CounterView sent Hello'));
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title)
@@ -99,7 +99,7 @@ class CounterView extends GlueWidget<InEvent, OutEvent> {
   _CounterViewState createState() => _CounterViewState();
 }
 
-class _CounterViewState extends GlueState<InEvent, OutEvent, CounterView> {
+class _CounterViewState extends GlueState<CounterView> {
 
   String _text = '';
 

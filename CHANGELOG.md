@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.4
+
+* Simplify GlueState
+  
 ## 1.0.3
 
 * Update description
