@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.5
+
+* Add GlueHub
+
 ## 1.0.4
 
 * Simplify GlueState

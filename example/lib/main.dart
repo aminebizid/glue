@@ -55,7 +55,15 @@ class _MyHomePageState extends State<MyHomePage> {
        FloatingActionButton(
         onPressed: () => _counterView.pushEvent(MinusEvent()),
         tooltip: 'Minus',
-        child: Icon(Icons.remove)) 
+        child: Icon(Icons.remove)),
+        FloatingActionButton(
+        onPressed: () => GlueHub.push<CounterView>(MinusEvent()),
+        tooltip: 'Minus',
+        child: Icon(Icons.ac_unit)),
+         FloatingActionButton(
+        onPressed: () => GlueHub.pushGroup("Group1", PlusEvent()),
+        tooltip: 'Minus',
+        child: Icon(Icons.access_alarm))
       ],
       )
 
@@ -74,7 +82,10 @@ abstract class OutEvent {}
 class HelloEvent extends OutEvent {}
 
 
-class CounterView extends GlueWidget<InEvent, OutEvent> {
+class CounterView extends GlueWidget {
+  final String groupName;
+  CounterView({this.groupName}) : super (groupName: groupName);
+
   _CounterViewState createState() => _CounterViewState();
 }
 

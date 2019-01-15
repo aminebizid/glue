@@ -3,7 +3,7 @@
 A library that allows you to easily pass a data Model from a one Widget to others using messaging system.
 This will help avoid passing delegates.
 
-A widget can subscribe to external events using on<EventType>() method.
+A widget can subscribe to external events using on<EventClassType>() method.
 
 ```dart
 
@@ -95,7 +95,7 @@ abstract class OutEvent {}
 class HelloEvent extends OutEvent {}
 
 
-class CounterView extends GlueWidget<InEvent, OutEvent> {
+class CounterView extends GlueWidget {
   _CounterViewState createState() => _CounterViewState();
 }
 
